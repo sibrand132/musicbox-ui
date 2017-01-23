@@ -1,0 +1,12 @@
+[
+  {
+    "user": "Brandon",
+    "releaseDate": "21.08.2016",
+    "comment": "comment1"
+  },
+  {
+    "user": "Mat",
+    "releaseDate": "21.08.2016",
+    "comment": "comment2"
+  }
+]

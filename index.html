@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html ng-app="application">
+
+<head>
+    <meta charset="utf-8" />
+    <link rel="shortcut icon" href="img/icon.ico" />
+    <title>MusicBox</title>
+
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.27.0/css/uikit.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.27.0/js/uikit.min.js"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+
+
+    <!-- Latest compiled JavaScript -->
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+    <script>
+        document.write('<base href="' + document.location + '" />');
+    </script>
+
+    <!-- JQUERY -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+
+    <!-- ANGULAR -->
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-animate.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-cookies.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-route.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.18/angular-ui-router.min.js"></script>
+    <script src="https://cdn.rawgit.com/auth0/angular-storage/master/dist/angular-storage.js"></script>
+    <script src="https://cdn.rawgit.com/nervgh/angular-file-upload/master/dist/angular-file-upload.min.js"></script>
+
+
+
+
+    <!-- BOOTSTRAP -->
+    <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-1.3.2.js"></script>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-1.3.2.js"></script>
+
+
+
+
+
+    <script src="app/ui-bootstrap-tpls-1.3.2.min.js"></script>
+    <script src="app/app.js"></script>
+    <script src="app/controllers/userCtrl.js"></script>
+    <script src="app/controllers/adminCtrl.js"></script>
+    <script src="app/controllers/leaderCtrl.js"></script>
+    <script src="app/controllers/navigation.js"></script>
+    <script src="app/services/restservice.js"></script>
+    <!--<script src="app/controllers/controlers.js"></script>-->
+    <script src="app/filters/filters.js"></script>
+    <script src="app/services/services.js"></script>
+    <script src="app/directives/directives.js"></script>
+    <script src="app/datepicker/js/bootstrap-datepicker.js"></script>
+
+
+
+    <link rel="stylesheet" href="app/css/MainPage.css" />
+    <link rel="stylesheet" href="app/css/adminPanel.css" />
+    <link rel="stylesheet" href="app/css/editBand.css" />
+    <link rel="stylesheet" href="app/datepicker/css/datepicker.css">
+
+    <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Buenard&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+
+
+    <style>
+        .my-drop-zone { border: dotted 3px lightgray; }
+        .nv-file-over { border: dotted 3px red; } /* Default class applied to drop zones on over */
+        .another-file-over-class { border: dotted 3px green; }
+
+    </style>
+
+</head>
+
+<body class="uk-animation-fade"  >
+
+
+<div id="logo">
+    <a href="#/"> <img src="img/Logo3.png"></a>
+</div>
+
+
+<div ng-controller="controllerNavigation" ng-include="navigation()"></div>
+
+
+<div class="container" style="width: 90%">
+    <div class="col-sm-2" id="list">
+    <div ng-controller="controllerSideMenu" ng-include="sideMenu()"></div>
+    </div>
+    <div ng-view class="col-sm-10"></div>
+
+</div>
+
+<div ng-repeat="band in bandsdashboard.bands">
+    <p>{{band.name}}</p>
+</div>
+
+
+
+
+
+</body>
+</html>

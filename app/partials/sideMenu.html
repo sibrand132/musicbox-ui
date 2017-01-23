@@ -1,0 +1,11 @@
+<div class="uk-animation-fade" >
+    <div class="input-group" style="margin-top: 20px; margin-bottom: 20px; width: 100%">
+             <span class="input-group-addon">
+                 <i class="glyphicon glyphicon-search"></i>
+             </span>
+        <input type="text"  class="form-control" placeholder="Search band ..." ng-model="search"/>
+    </div>
+    <div class="list-group">
+        <a href="#/band/{{band.id}}" class="list-group-item" ng-repeat="band in bands| filter: search">{{band.name}}</a>
+    </div>
+</div>

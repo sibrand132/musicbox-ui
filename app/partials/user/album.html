@@ -1,0 +1,32 @@
+    <div class="cont uk-animation-fade " style="clear: both; border-radius: 20px;" >
+        <div id="band-logo"><img src="./img/default.png"/></div>
+        <div id="band-name">{{album.title}}</div>
+
+
+        <div id="band-established">Released: {{album.releaseDate}}</div>
+        <div id="band-about">About: <br/>{{album.about}}</div>
+
+        <div id="band-albums">Songs: <br/>
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>Title</th>
+                    <th>Release Date</th>
+
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="song in songs">
+                    <td><img src="./img/default.png" style="width: 100px;"/></td>
+                    <td>{{song.title}}</td>
+                    <td>{{song.releaseDate}}</td>
+
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>

@@ -1,0 +1,134 @@
+[
+  {
+    "name": "Stacey",
+    "email": "Quisque.libero.lacus@nisiMaurisnulla.edu",
+    "role": "user",
+    "instruments": ["guitar", "bass"]
+  },
+  {
+    "name": "Bree",
+    "email": "sem@vitaediam.net",
+    "role": "user",
+    "instruments": ["guitar", "bass"]
+  },
+  {
+    "name": "Melyssa",
+    "email": "tincidunt.tempus.risus@Cras.org",
+    "role": "user",
+    "instruments": ["guitar", "bass"]
+  },
+  {
+    "name": "Otto",
+    "email": "mi.ac.mattis@Duis.ca",
+    "role": "user",
+    "instruments": ["guitar", "bass"]
+  },
+  {
+    "name": "Aristotle",
+    "email": "consectetuer@nullavulputate.edu",
+    "role": "user",
+    "instruments": ["guitar", "bass"]
+  },
+  {
+    "name": "Richard",
+    "email": "amet@Etiamvestibulum.com",
+    "role": "user",
+    "instruments": ["guitar", "bass"]
+  },
+  {
+    "name": "Evangeline",
+    "email": "Vestibulum.ut@cursusvestibulum.org",
+    "role": "user",
+    "instruments": ["guitar", "bass"]
+  },
+  {
+    "name": "Beverly",
+    "email": "felis.Donec@ipsum.org",
+    "role": "user",
+    "instruments": ["guitar", "bass"]
+  },
+  {
+    "name": "Abel",
+    "email": "pulvinar@ante.org",
+    "role": "user",
+    "instruments": ["guitar", "bass"]
+  },
+  {
+    "name": "Kareem",
+    "email": "rutrum.Fusce.dolor@nonummy.com",
+    "role": "user",
+    "instruments": ["guitar", "bass"]
+  },
+  {
+    "name": "Grant",
+    "email": "feugiat.tellus.lorem@vulputateullamcorper.edu",
+    "role": "user",
+    "instruments": ["guitar", "bass"]
+  },
+  {
+    "name": "Justin",
+    "email": "arcu@penatibuset.edu",
+    "role": "user",
+    "instruments": ["guitar", "bass"]
+  },
+  {
+    "name": "Howard",
+    "email": "rutrum.eu.ultrices@semNulla.co.uk",
+    "role": "user",
+    "instruments": ["guitar", "bass"]
+  },
+  {
+    "name": "Kylie",
+    "email": "eget.ipsum@atpretium.ca",
+    "role": "user",
+    "instruments": ["guitar", "bass"]
+  },
+  {
+    "name": "Isabelle",
+    "email": "dis.parturient@dui.co.uk",
+    "role": "user",
+    "instruments": ["guitar", "bass"]
+  },
+  {
+    "name": "Malik",
+    "email": "commodo@mi.co.uk",
+    "role": "user",
+    "instruments": ["guitar", "bass"]
+  },
+  {
+    "name": "Ebony",
+    "email": "magna@fermentum.co.uk",
+    "role": "user",
+    "instruments": ["guitar", "bass"]
+  },
+  {
+    "name": "Simon",
+    "email": "In.nec.orci@faucibusorciluctus.ca",
+    "role": "user",
+    "instruments": ["guitar", "bass"]
+  },
+  {
+    "name": "Quinlan",
+    "email": "sagittis.augue@quisdiam.org",
+    "role": "user",
+    "instruments": ["guitar", "bass"]
+  },
+  {
+    "name": "Melyssa",
+    "email": "eros.nec@adipiscingnonluctus.org",
+    "role": "user",
+    "instruments": ["guitar", "bass"]
+  },
+  {
+    "name": "Hollee",
+    "email": "mauris.erat.eget@sociisnatoque.ca",
+    "role": "user",
+    "instruments": ["guitar", "bass"]
+  },
+  {
+    "name": "Chiquita",
+    "email": "Mauris@liberoet.ca",
+    "role": "user",
+    "instruments": ["guitar", "bass"]
+  }
+]

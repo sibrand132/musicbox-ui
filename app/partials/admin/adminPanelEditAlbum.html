@@ -1,0 +1,58 @@
+<form ng-submit="saveChanges()">
+    <div class="cont uk-animation-fade " style="clear: both; border-radius: 20px;" >
+
+
+
+        <div id="edit">
+            <div class="form-group">
+                <label style="padding-top:10px ">Album title</label>
+                <input type="text" class="form-control" ng-model="album.title">
+
+            </div>
+
+            <div class="form-group">
+                <label>About album</label>
+                <textarea type="text" rows="5" class="form-control" ng-model="album.about"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Save</button>
+
+        </div>
+
+
+
+        <div id="band-logo"><img src="./img/default.png"/></div>
+        <div id="band-name">{{album.title}}</div>
+
+
+        <div id="band-established">Released: {{album.releaseDate}}</div>
+        <div id="band-about">About: <br/>{{album.about}}</div>
+
+        <div id="band-albums">Songs: <a href="#/admin/create-song" class="btn btn-default">Add song</a> <br/>
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>Title</th>
+                    <th>Release Date</th>
+                    <!--<th></th>-->
+                    <th></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="song in songs">
+                    <td><img src="./img/default.png" style="width: 100px;"/></td>
+                    <td>{{song.title}}</td>
+                    <td>{{song.releaseDate}}</td>
+                    <!--<td><a href="#/admin/edit-album/{{$index}}" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil"></span></a> </td>-->
+                    <td><button ng-click="deleteAlbum(album,$index)"class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-remove"></span></button></td>
+                    <td><a href="#/admin/song-logs/{{$index}}" class="btn btn-default">Logs</a></td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+</form>

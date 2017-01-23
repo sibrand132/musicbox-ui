@@ -1,0 +1,43 @@
+<form ng-submit="saveChanges()">
+    <div class="cont uk-animation-fade " style="clear: both; border-radius: 20px;" >
+
+
+        <div id="edit">
+            <div class="form-group">
+                <label style="padding-top:10px ">User name</label>
+                <input type="text" class="form-control" ng-model="user.name">
+
+            </div>
+
+            <div class="form-group">
+                <label>User email</label>
+                <input type="text" class="form-control" ng-model="user.email"/>
+            </div>
+
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" class="form-control" ng-model="user.password"/>
+            </div>
+
+            <div class="form-group">
+                <label>Repeat password</label>
+                <input type="password" class="form-control" ng-model="user.passconf"/>
+            </div>
+
+
+            <button type="submit" class="btn btn-primary">Save</button>
+
+        </div>
+
+
+        <!--<input class="datepicker" type="text" name="date" data-date-format="dd.mm.yyyy" ng-model="band.established"><br/>-->
+
+        <div id="band-logo"><img src="./img/default-avatar.png" style="width: 512px;"/> </div>
+        <div id="band-name">{{user.name}}</div>
+        <div id="band-established">Email: {{user.email}}</div>
+
+        <div style="clear: both;"></div>
+
+
+    </div>
+</form>

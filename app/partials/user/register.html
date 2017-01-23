@@ -1,0 +1,66 @@
+<form ng-submit="formSubmit()" style="clear: both" class="uk-animation-fade ">
+    <div class="cont center-block" >
+        <div class="row">
+
+            <div class="col-sm-6 center-block" style="float: none; padding-top: 20px">
+
+                <div class="panel panel-default" style="color: #262626; border-radius: 20px;">
+                    <div class="panel-heading"style="background-color: #262626; color: whitesmoke;">
+                        <h3 class="panel-title" style=" font-size: 20px; "><strong>Register</strong></h3>
+                    </div>
+
+                    <div id="image-avatar">
+                        <img src="./img/default-avatar.png"/>
+                    </div>
+                    <div class="panel-body">
+                        <div ng-if="errors.login" class="alert alert-danger">{{errors.login}}</div>
+                        <div class="form-group" ng-class="{ 'has-error':errors.name, 'has-success':!errors.name && submit}">
+                            <label>Name</label>
+                            <input type="text" style="width: 100%"  class="form-control" ng-model="input.name" placeholder="Name...">
+                            <span class="text-danger">{{errors.name}}</span>
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-error':errors.email, 'has-success':!errors.email && submit}">
+                            <label>Email</label>
+                            <input type="text" style="width: 100%"  class="form-control" ng-model="input.email" placeholder="Email...">
+                            <span class="text-danger">{{errors.email}}</span>
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-error':errors.password, 'has-success':!errors.password && submit}">
+                            <label>Password</label>
+                            <input type="password" style="width: 100%"  class="form-control" ng-model="input.password" placeholder="Password...">
+                            <span class="text-danger">{{errors.password}}</span>
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-error':errors.passconf, 'has-success':!errors.passconf && submit}">
+                            <label>Repeat password</label>
+                            <input type="password" style="width: 100%"  class="form-control" ng-model="input.passconf" placeholder="Repeat password...">
+                            <span class="text-danger">{{errors.passconf}}</span>
+                        </div>
+                        <label>What do you want to do?</label>
+                        <div class="form-group" ng-class="{ 'has-error':errors.passconf, 'has-success':!errors.passconf && submit}">
+                            <div class="checkbox">
+                                <label><input type="checkbox" ng-model="input.createBand">Create band</label>
+                            </div>
+                            <span class="text-danger">{{errors.createBand}}</span>
+                        </div>
+
+                        <div class="form-group">
+
+
+
+
+
+                            <input type="text" name="country" id="country" ng-model="country" ng-keyup="complete(country)" class="form-control" />
+                            <ul class="list-group" ng-model="hidethis" ng-hide="hidethis">
+                                <li class="list-group-item" ng-repeat="countrydata in filterCountry" ng-click="fillTextbox(countrydata)">{{countrydata}}</li>
+                            </ul>
+
+                            <!--<label>Join to existing band</label>-->
+                            <!--<input type="text" class="form-control"  ng-model="find"  placeholder="Find band ..." >-->
+                        </div>
+
+                        <button class="btn btn-primary btn-block" style=" padding-top: 10px">Sign up</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

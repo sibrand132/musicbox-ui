@@ -1,0 +1,90 @@
+<form ng-submit="saveChanges()">
+<div class="cont uk-animation-fade " style="clear: both; border-radius: 20px;" >
+
+    <script>
+        $(function(){
+            $('.datepicker').datepicker();
+
+        });
+    </script>
+
+    <div id="edit">
+    <div class="form-group">
+        <label style="padding-top:10px ">Band name</label>
+        <input type="text" class="form-control" ng-model="band.name">
+
+    </div>
+
+    <div class="form-group">
+        <label>About Band</label>
+        <textarea type="text" rows="5" class="form-control" ng-model="band.about"></textarea>
+    </div>
+
+
+
+
+            <button type="submit" class="btn btn-primary">Save</button>
+
+</div>
+
+    <div style="position: relative; top:20px; margin-left: 20px;">View</div>
+    <hr style="border-style: dashed; border-color: black; margin-left: 20px; margin-right: 20px;"/>
+    <!--<input class="datepicker" type="text" name="date" data-date-format="dd.mm.yyyy" ng-model="band.established"><br/>-->
+
+    <div id="band-logo"><img src="./img/default.png"/></div>
+    <div id="band-name">{{band.name}}</div>
+
+
+    <div id="band-established">Established: {{band.established}}</div>
+    <div id="band-about">About: <br/>{{band.about}}</div>
+
+    <div id="band-albums">Albums: <a href="#/admin/create-album" class="btn btn-default">Create album</a> <br/>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th></th>
+                <th>Title</th>
+                <th>Release Date</th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="album in albums">
+                <td><img src="./img/default.png" style="width: 100px;"/></td>
+                <td>{{album.title}}</td>
+                <td>{{album.releaseDate}}</td>
+                <td><a href="#/admin/edit-album/{{$index}}" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil"></span></a> </td>
+                <td><button ng-click="deleteAlbum(album,$index)"class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-remove"></span></button></td>
+            </tr>
+            </tbody>
+        </table>
+
+
+
+
+    </div>
+    <div id="band-members">Members: <br/>
+        <table class="table">
+            <thead>
+            <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Email</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="member in members">
+                <td><img src="./img/default-avatar.png" style="width: 100px;"/></td>
+                <td>{{member.name}}</td>
+                <td>{{member.email}}</td>
+                <td><button ng-click="deleteMember(member,$index)"class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-remove"></span></button></td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
+    </form>

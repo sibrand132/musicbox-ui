@@ -1,0 +1,173 @@
+<div nv-file-drop="" uploader="uploader" class="cont uk-animation-fade" filters="queueLimit" style="clear: both; border-radius: 20px" >
+    <input type="text" class="form-control" style="float: left; margin-right: 10px; margin: 20px; width: 60%" ng-model="find"  placeholder="Search ..." >
+    <a href="#/create-track" class="btn btn-primary btn-md" style="width: 25%; float: right; color: whitesmoke; margin: 20px; ">Add track <span class="glyphicon glyphicon-plus"></span></a>
+    <div style="clear: both"></div>
+    <br/>
+
+
+    <form name="outerForm" class="tab-form-demo" style="margin: 20px">
+        <uib-tabset active="activeForm">
+
+            <uib-tab index="1" heading="Your profile">
+               <label style="font-size: 20px; margin-top: 20px;">Add track</label>
+
+                <div class="row">
+
+                    <div class="col-md-3">
+
+                        <h3>Select files</h3>
+
+                        <div ng-show="uploader.isHTML5">
+                            <!-- 3. nv-file-over uploader="link" over-class="className" -->
+                            <div class="well my-drop-zone" nv-file-over="" uploader="uploader">
+                                Drop zone
+                            </div>
+
+                        </div>
+
+                        <input class="btn btn-default" type="file" nv-file-select="" uploader="uploader" />
+                    </div>
+
+                    <div class="col-md-9 table-responsive" style="margin-bottom: 40px">
+
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th width="50%">Name</th>
+                                <th ng-show="uploader.isHTML5">Size</th>
+                                <th ng-show="uploader.isHTML5">Progress</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="item in uploader.queue">
+                                <td><strong>{{ item.file.name }}</strong></td>
+                                <td ng-show="uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+                                <td ng-show="uploader.isHTML5">
+                                    <div class="progress" style="margin-bottom: 0;">
+                                        <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                                    </div>
+                                </td>
+                                <td class="text-center">
+                                    <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                                    <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                                    <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                                </td>
+                                <td nowrap>
+                                    <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                                        <span class="glyphicon glyphicon-upload"></span> Upload
+                                    </button>
+                                    <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                                        <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                                    </button>
+                                    <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                                        <span class="glyphicon glyphicon-trash"></span> Remove
+                                    </button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <div>
+                            <div>
+                                Queue progress:
+                                <div class="progress" style="">
+                                    <div class="progress-bar" role="progressbar" ng-style="{ 'width': uploader.progress + '%' }"></div>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-success btn-s" ng-click="uploader.uploadAll()" ng-disabled="!uploader.getNotUploadedItems().length">
+                                <span class="glyphicon glyphicon-upload"></span> Upload all
+                            </button>
+                            <button type="button" class="btn btn-warning btn-s" ng-click="uploader.cancelAll()" ng-disabled="!uploader.isUploading">
+                                <span class="glyphicon glyphicon-ban-circle"></span> Cancel all
+                            </button>
+                            <button type="button" class="btn btn-danger btn-s" ng-click="uploader.clearQueue()" ng-disabled="!uploader.queue.length">
+                                <span class="glyphicon glyphicon-trash"></span> Remove all
+                            </button>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </uib-tab>
+
+
+            <style>
+                .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+                    background-color: #A9A9A9;
+
+                }
+            </style>
+            <uib-tab index="2" heading="Tracks list">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Comment</th>
+                            <th>Sended</th>
+                            <th>Instrument</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="track in tracks| filter: find">
+                            <td>{{$index}}</td>
+                            <td>{{track.comment}}</td>
+                            <td>{{track.lastUpdate}}</td>
+                            <td>{{track.instrument}}</td>
+                            <td></td>
+                            <td><button ng-click="deleteTrack(track,$index)"class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-remove"></span></button></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </uib-tab>
+            <uib-tab index="3" heading="Members list">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Avatar</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Instruments</th>
+                        <th>Role</th>
+                        <th></th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="user in users| filter: find">
+                        <td>{{$index}}</td>
+                        <td><img src="./img/default-avatar.png" style="width: 100px"></td>
+                        <td>{{user.name}}</td>
+                        <td>{{user.email}}</td>
+                        <td>
+                            <table class="table" style="background-color: transparent">
+                                <tbody>
+                                <tr ng-repeat="instrument in user.instruments">
+                                    <td>{{instrument}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                        <td>{{user.role}}</td>
+
+                    </tr>
+                    </tbody>
+                </table>
+            </uib-tab>
+
+
+
+        </uib-tabset>
+
+
+    </form>
+
+
+</div>

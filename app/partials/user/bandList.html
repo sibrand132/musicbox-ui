@@ -1,0 +1,38 @@
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Logo</th>
+        <th>Name</th>
+        <th>Albums</th>
+        <th>Leader</th>
+        <th>Established</th>
+        <th>Status</th>
+        <th></th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="band in bands| filter: find">
+        <td>{{$index}}</td>
+        <td><img src="./img/default.png" style="width: 100px"></td>
+        <td>{{band.name}}</td>
+        <td>
+            <table class="table" style="background-color: transparent">
+                <tbody>
+                <tr ng-repeat="album in band.albums">
+                    <td>{{album}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+        <td>{{band.leader}}</td>
+        <td>{{band.established}}</td>
+        <td ng-if="band.status=='active'"><button class="btn btn-success btn-s disabled">active</button></td>
+        <td ng-if="band.status=='suspended'"><button class="btn btn-warning btn-s disabled">suspended</button></td>
+        <td ng-if="band.status=='inactive'"><button class="btn btn-danger btn-s disabled">inactive</button></td>
+        <td><a href="#/admin/edit-band/{{$index}}" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil"></span></a> </td>
+        <td><button ng-click="deleteBand(band,$index)"class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-remove"></span></button></td>
+    </tr>
+    </tbody>
+</table>

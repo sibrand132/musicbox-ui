@@ -1,0 +1,107 @@
+
+html,body {
+
+    /*background-image: url(../../img/background-pattern.jpg);*/
+    /*background-repeat: repeat-x;*/
+
+    background-image: url(../../img/background.png);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-color:#464646;
+    font-family: 'Buenard';
+
+}
+
+
+
+#logo{
+    float: left;
+    margin: 20px;
+    width: 300px;
+}
+
+
+
+
+#register-panel{
+    margin: 3%;
+    margin-right: 20%;
+    float: right;
+    font-size: 70px;
+    font-family: 'Niagara Engraved', sans-serif;
+}
+#about-button{
+    float: left;
+}
+#log-in-button{
+    float: left;
+    margin-left: 40px;
+    margin-right: 40px;
+}
+
+#admin{
+    float: left;
+}
+
+#leader{
+    float: left;
+    margin-left: 40px;
+    margin-right: 40px;
+}
+#register-button{
+    float: left;
+    margin-right: 40px;
+}
+
+#list{
+    background: rgba(238,238,238,0.9);
+    border-radius: 10px;
+}
+
+.jumbotron{
+    clear: both;
+    background: rgba(238,238,238,0.9);
+}
+
+a{
+    color: black;
+}
+
+a:hover, a:visited, a:focus, a:active{
+    color: black;
+    text-decoration: none;
+}
+
+#image-avatar{
+    width: 40%;
+    display: block;
+    margin: 0 auto;
+    margin-top: 20px;
+}
+
+.btn-primary:hover{
+    background-color: #4d667f;
+}
+
+
+@media screen and (max-width: 960px) {
+    html,body {
+        background-image: url(../../img/background-mobile.png);
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+        background-color:#464646;
+    }
+    #logo{
+        width: 100px;
+    }
+    #register-panel{
+        margin: 5%;
+        float: right;
+        font-size: 40px;
+    }
+
+}
