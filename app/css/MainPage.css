@@ -14,6 +14,11 @@ html,body {
 
 }
 
+html{
+    position: relative;
+    min-height: 100%;
+}
+
 
 
 #logo{
@@ -27,31 +32,42 @@ html,body {
 
 #register-panel{
     margin: 3%;
-    margin-right: 20%;
+    margin-right: 7%;
     float: right;
     font-size: 70px;
     font-family: 'Niagara Engraved', sans-serif;
 }
 #about-button{
-    float: left;
+    float: right;
 }
 #log-in-button{
-    float: left;
+    float: right;
     margin-left: 40px;
+    margin-right: 40px;
+}
+
+#log-out-button{
+    float: right;
+    margin-left: 40px;
+
+}
+#profile{
+    float: right;
     margin-right: 40px;
 }
 
 #admin{
-    float: left;
+    float: right;
 }
 
 #leader{
-    float: left;
+    float: right;
     margin-left: 40px;
     margin-right: 40px;
 }
 #register-button{
-    float: left;
+    float: right;
+    margin-left: 40px;
     margin-right: 40px;
 }
 
@@ -85,6 +101,27 @@ a:hover, a:visited, a:focus, a:active{
     background-color: #4d667f;
 }
 
+.footer {
+    background: rgba(238,238,238,0.9);
+    border-radius: 6px;
+    position: absolute;
+    bottom: 0;
+
+    width: 88%;
+    /* Set the fixed height of the footer here */
+    height: 60px;
+    line-height: 60px; /* Vertically center the text there */
+}
+.text-muted {
+    color:black;
+    margin-left: 200px;
+}
+.contact{
+    color: #000000;
+    float: right;
+    margin-right: 200px;
+}
+
 
 @media screen and (max-width: 960px) {
     html,body {
@@ -98,6 +135,11 @@ a:hover, a:visited, a:focus, a:active{
     #logo{
         width: 100px;
     }
+    html{
+        position: relative;
+        min-height: 100%;
+    }
+
     #register-panel{
         margin: 5%;
         float: right;

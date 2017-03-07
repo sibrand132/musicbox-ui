@@ -1,83 +1,167 @@
 'use strict';
 angular
     .module('admin', [ "ngRoute", "ui.bootstrap", "angularFileUpload", "myDirectives", 'RESTService'])
-    .controller('controllerAdminPanel', function($scope, $http){
+    .controller('controllerAdminPanel', function(AlbumsModel,BandsModel,UsersModel,$scope, $http, $routeParams, FilesModel,checkToken,store){
+        $scope.token={};
+        $scope.token.token=checkToken.raw();
 
-        $http.get("app/data/users.json").success(function(data){
-            $scope.users=data;
+        function verifyToken(){
+            UsersModel.verifyToken($scope.token).then(function(result){
+                $scope.token.token=result.data.token;
+                $scope.message=result.data.message;
+            });
+            store.set('token', $scope.token.token);
+        }
+        verifyToken();
+
+        function getBandLogo(id) {
+            return FilesModel.getBandLogo(id);
+        }
+
+        $scope.bands =[];
+        BandsModel.all().then(function(result) {
+            $scope.bands = result.data;
+            if($scope.bands[0]!=null){
+                $scope.bands.logo={};
+                var i=0;
+                for(i; i<$scope.bands.length;i++){
+
+                    $scope.bands[i].logo = getBandLogo($scope.bands[i].id);
+                }
+            }
+
         });
 
-        $http.get("app/data/bands.json").success(function(data){
-            $scope.bands=data;
-        });
 
-        $http.get("app/data/tracks.json").success(function(data){
-            $scope.tracks=data;
-        });
-        $http.get("app/data/songs.json").success(function(data){
-            $scope.songs=data;
-        });
 
-        $scope.deleteBand=function(band,$index){
+        $scope.deleteBand = function(band,$index){
 
             if(!confirm("Do you want to delete this band?")){
                 return false;
             }
+            BandsModel.deleteBand(band.id);
             $scope.bands.splice($index,1);
-            console.log(band)
-
-
         };
 
-        $scope.deleteUser=function(user,$index){
+
+
+        function getAvatar(id) {
+            return FilesModel.getUsersAvatar(id);
+        }
+
+        $scope.users =[];
+            UsersModel.getUsers().then(function(result){
+                $scope.users = result.data;
+                if($scope.users[0]!=null){
+                    $scope.users.avatar={};
+                    var i=0;
+                    for(i; i<$scope.users.length;i++){
+
+                        $scope.users[i].avatar = getAvatar($scope.users[i].id);
+                    }
+                }
+            });
+
+
+        $scope.deleteUser = function(user,$index){
 
             if(!confirm("Do you want to delete this user?")){
                 return false;
             }
-
+            UsersModel.deleteUsers(user.id);
             $scope.users.splice($index,1);
-            console.log(user);
         };
+
+
+        $scope.albumLoc = function(album){
+
+            location.replace("#/album/"+album.id);
+        };
+
+
     })
 
 ///////////////////////////band//////////////////////////////////////
 
-    .controller('controllerBandEdit', function($scope, $http, $routeParams){
+    .controller('controllerBandEdit', function(BandsModel,AlbumsModel,$scope, $http, $routeParams,FilesModel,checkToken,UsersModel,store){
+        $scope.token={};
+        $scope.token.token=checkToken.raw();
 
-        $http.get("app/data/albums.json").success(function(data){
-            $scope.albums=data;
-        });
+        function verifyToken(){
+            UsersModel.verifyToken($scope.token).then(function(result){
+                $scope.token.token=result.data.token;
+                $scope.message=result.data.message;
+            });
+            store.set('token', $scope.token.token);
+        }
+        verifyToken();
 
-        $http.get("app/data/bands.json").success(function(data){
-            $scope.bands=data;
-            $scope.band=$scope.bands[$routeParams.id];
-        });
+        function getBandsById(){
+            BandsModel.getBandsById($routeParams.id).then(function(result){
+                $scope.band= result.data;
+            })
+        }
+        getBandsById();
 
-        $scope.deleteAlbum=function(album,$index){
+        function getBandLogo(){
+            $scope.image = FilesModel.getBandLogo($routeParams.id);
+        }
+        getBandLogo();
 
-            if(!confirm("Do you want to delete this album?")){
-                return false;
+
+        function getAlbumLogo(id){
+            return FilesModel.getAlbumLogo(id);
+        }
+
+        AlbumsModel.getAlbumsByBandsId($routeParams.id).then(function(result) {
+            $scope.albums=result.data;
+            $scope.albums.albumLogo={};
+            var i=0;
+            for(i;i<$scope.albums.length;i++){
+                $scope.albums[i].albumLogo=getAlbumLogo($scope.albums[i].id);
             }
+        });
 
-            $scope.albums.splice($index,1);
-            console.log(album)
-        };
 
         $scope.saveChanges = function(band){
-            //przesłanie formularza
+            BandsModel.updateBand($routeParams.id,band).then(function(result){
+                $scope.band= result.data;
+            });
+            location.reload();
         };
+
+
+        $scope.deleteAlbum = function(album,$index){
+
+            if(!confirm("Do you want to delete this album?")){
+                        return false;
+            }
+            AlbumsModel.deleteAlbum(album.id);
+            $scope.albums.splice($index,1);
+        }
+
 
 
     })
 
-    .controller('controllerBandCreate', function($scope, $http) {
+    .controller('controllerBandCreate', function(BandsModel,$scope, $http,UsersModel,checkToken,store) {
 
-        //$http.post("app/api/", function () {
-        //
-        //}).success(function (data) {
-        //    $scope.bands = data;
-        //    $scope.band = $scope.bands[$routeParams.id];
-        //});
+        $scope.token={};
+        $scope.token.token=checkToken.raw();
+
+        function verifyToken(){
+            UsersModel.verifyToken($scope.token).then(function(result){
+                $scope.token.token=result.data.token;
+                $scope.message=result.data.message;
+            });
+            store.set('token', $scope.token.token);
+        }
+        verifyToken();
+
+        $scope.users =[];
+        UsersModel.getUsers().then(function(result){
+            $scope.users = result.data;
+        });
 
         $scope.band={};
 
@@ -93,41 +177,74 @@ angular
             mm='0'+mm
         }
         var today = dd+'.'+mm+'.'+yyyy;
-        $scope.currentDate = today;
+        $scope.established = today;
 
+        $scope.email={};
+        $scope.email.email={};
 
+        $scope.createBand = function (band) {
+            $scope.band=band;
+            $scope.band.established=today;
+            BandsModel.createBand($scope.band).then(function (result) {
+                initCreateBand();
+            });
 
-        $scope.createBand = function () {
+            $scope.email.email=band.leader;
+            UsersModel.setLeader($scope.email);
+        };
 
-            console.log($scope.band);
+        function initCreateBand(){
+            $scope.band = {name: '', about: ''}
         }
     })
 
 /////////////////////////user//////////////////////////////////////////
 
-    .controller('controllerUserEdit', function($scope, $http, $routeParams){
+    .controller('controllerUserEdit', function(UsersModel,$scope, $http, $routeParams,checkToken,store){
 
+        $scope.token={};
+        $scope.token.token=checkToken.raw();
 
-        $http.get("app/data/users.json").success(function(data){
-            $scope.users=data;
-            $scope.user=$scope.users[$routeParams.id];
-        });
+        function verifyToken(){
+            UsersModel.verifyToken($scope.token).then(function(result){
+                $scope.token.token=result.data.token;
+                $scope.message=result.data.message;
+            });
+            store.set('token', $scope.token.token);
+        }
+        verifyToken();
+
+        function getUsersById(){
+            UsersModel.getUsersById($routeParams.id).then(function(result){
+                $scope.user= result.data;
+            })
+        }
+        getUsersById();
 
 
         $scope.saveChanges = function(user){
-            //przesłanie formularza
+            UsersModel.updateUsers($routeParams.id,user).then(function(result){
+                $scope.user= result.data;
+            });
+            location.reload();
         }
+
+
 
     })
 
-    .controller('controllerUserCreate', function($scope, $http) {
+    .controller('controllerUserCreate', function(UsersModel,$scope, $http, checkToken,store) {
+        $scope.token={};
+        $scope.token.token=checkToken.raw();
 
-        //$http.post("app/api/", function () {
-        //
-        //}).success(function (data) {
-        //    $scope.users = data;
-        //    $scope.user = $scope.users[$routeParams.id];
-        //});
+        function verifyToken(){
+            UsersModel.verifyToken($scope.token).then(function(result){
+                $scope.token.token=result.data.token;
+                $scope.message=result.data.message;
+            });
+            store.set('token', $scope.token.token);
+        }
+        verifyToken();
 
         $scope.user={};
         var today = new Date();
@@ -146,30 +263,49 @@ angular
 
 
 
-        $scope.createUser = function () {
+        $scope.createUser = function (user) {
 
-            console.log($scope.user);
+            $scope.user=user;
+            UsersModel.createUsers($scope.user).then(function (result) {
+                initCreateUser();
+            });
+        };
+
+        function initCreateUser(){
+            $scope.user = {name: '', email: '', pass: '', role: ''}
         }
     })
 
 //////////////////////////////album///////////////////////////////////
 
-    .controller('controllerAlbumEdit', function($scope, $http, $routeParams){
+    .controller('controllerAlbumEdit', function(AlbumsModel,$scope, $http, $routeParams,checkToken,UsersModel,store){
+        $scope.token={};
+        $scope.token.token=checkToken.raw();
+
+        function verifyToken(){
+            UsersModel.verifyToken($scope.token).then(function(result){
+                $scope.token.token=result.data.token;
+                $scope.message=result.data.message;
+            });
+            store.set('token', $scope.token.token);
+        }
+        verifyToken();
+
+        function getAlbumById(){
+            AlbumsModel.getAlbumsById($routeParams.id).then(function(result){
+                $scope.album= result.data;
+            })
+        }
+        getAlbumById();
 
 
-        $http.get("app/data/albums.json").success(function(data){
-            $scope.albums=data;
-            $scope.album=$scope.albums[$routeParams.id];
-        });
-
-        $http.get("app/data/songs.json").success(function(data){
-            $scope.songs=data;
-            $scope.song=$scope.song[$routeParams.id];
-        });
-
-        $scope.saveChanges = function(band){
-            //przesłanie formularza
+        $scope.saveChanges = function(album){
+            AlbumsModel.updateAlbum($routeParams.id,album).then(function(result){
+                $scope.album= result.data;
+            });
+            location.reload();
         };
+
 
         $scope.deleteSong = function(song, $index){
 
@@ -178,20 +314,22 @@ angular
             }
 
             $scope.songs.splice($index,1);
-            console.log(song)
         };
 
     })
 
-    .controller('controllerAlbumCreate', function($scope, $http, $routeParams){
+    .controller('controllerAlbumCreate', function(AlbumsModel,$scope, $http, $routeParams,checkToken,UsersModel,store){
+        $scope.token={};
+        $scope.token.token=checkToken.raw();
 
-
-        //$http.post("app/api/", function () {
-        //
-        //}).success(function (data) {
-        //    $scope.bands = data;
-        //    $scope.band = $scope.bands[$routeParams.id];
-        //});
+        function verifyToken(){
+            UsersModel.verifyToken($scope.token).then(function(result){
+                $scope.token.token=result.data.token;
+                $scope.message=result.data.message;
+            });
+            store.set('token', $scope.token.token);
+        }
+        verifyToken();
 
         $scope.album={};
 
@@ -208,49 +346,22 @@ angular
         }
         var today = dd+'.'+mm+'.'+yyyy;
         $scope.currentDate = today;
+        var bandsId=$routeParams.id;
 
 
 
-        $scope.createAlbum = function () {
+        $scope.createAlbum = function (album) {
 
-            console.log($scope.album);
+            $scope.album=album;
+            $scope.album.releaseDate=today;
+            $scope.album.bandsId=bandsId;
+            AlbumsModel.createAlbum($scope.album,bandsId).then(function (result) {
+                initCreateAlbum();
+            })
+        };
+
+        function initCreateAlbum(){
+            $scope.album = {title: '', about: ''}
         }
-    })
 
-///////////////////////////////////song///////////////////////////////
-
-    .controller('controllerSongCreate', function($scope, $http, $routeParams){
-
-
-        //$http.post("app/api/", function () {
-        //
-        //}).success(function (data) {
-        //    $scope.bands = data;
-        //    $scope.band = $scope.bands[$routeParams.id];
-        //});
-
-        $scope.song={};
-
-        var today = new Date();
-        var dd = today.getDate();
-        var mm = today.getMonth()+1;
-
-        var yyyy = today.getFullYear();
-        if(dd<10){
-            dd='0'+dd
-        }
-        if(mm<10){
-            mm='0'+mm
-        }
-        var today = dd+'.'+mm+'.'+yyyy;
-        $scope.currentDate = today;
-
-        $http.get("app/data/logs.json").success(function(data) {
-            $scope.logs=data;
-        });
-
-        $scope.createSong = function () {
-
-            console.log($scope.song);
-        }
     });

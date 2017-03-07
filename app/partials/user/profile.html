@@ -1,173 +1,372 @@
-<div nv-file-drop="" uploader="uploader" class="cont uk-animation-fade" filters="queueLimit" style="clear: both; border-radius: 20px" >
+<div class="cont uk-animation-fade" style="border-radius: 20px" >
     <input type="text" class="form-control" style="float: left; margin-right: 10px; margin: 20px; width: 60%" ng-model="find"  placeholder="Search ..." >
-    <a href="#/create-track" class="btn btn-primary btn-md" style="width: 25%; float: right; color: whitesmoke; margin: 20px; ">Add track <span class="glyphicon glyphicon-plus"></span></a>
+    <a href="#/profile/create-track" class="btn btn-primary btn-md" style="width: 25%; float: right; color: whitesmoke; margin: 20px; ">Add track <span class="glyphicon glyphicon-plus"></span></a>
+    <a href="#/profile/create-band" ng-if="!isLeader" class="btn btn-primary btn-md" style="width: 25%; float: right; color: whitesmoke; margin: 20px; ">Create band <span class="glyphicon glyphicon-plus"></span></a>
     <div style="clear: both"></div>
     <br/>
 
+    <script src="app/js/audioRecorder/recorder.js"></script>
+    <script src="app/js/audioRecorder/main.js"></script>
+    <script src="app/js/audioRecorder/audiodisplay.js"></script>
+    <script src="app/js/audioRecorder/recorderWorker.js"></script>
 
-    <form name="outerForm" class="tab-form-demo" style="margin: 20px">
+
+
+    <div name="outerForm" class="tab-form-demo" style="margin: 20px; ">
         <uib-tabset active="activeForm">
 
-            <uib-tab index="1" heading="Your profile">
-               <label style="font-size: 20px; margin-top: 20px;">Add track</label>
+            <uib-tab filters="queueLimit" nv-file-drop="" uploader="uploaderAvatar"  index="1" heading="Your profile">
+                <div class="uk-animation-fade">
+                <button style="margin-top:  20px; margin-bottom: 20px;" type="button" class="btn btn-default" data-toggle="collapse" data-target="#add-avatar">Set avatar</button>
 
-                <div class="row">
+                    <div class="collapse" id="add-avatar">
+                        <div class="row">
 
-                    <div class="col-md-3">
+                            <div class="col-md-3" style="margin:20px;">
 
-                        <h3>Select files</h3>
+                                <h3>Select files</h3>
 
-                        <div ng-show="uploader.isHTML5">
-                            <!-- 3. nv-file-over uploader="link" over-class="className" -->
-                            <div class="well my-drop-zone" nv-file-over="" uploader="uploader">
-                                Drop zone
+                                <div ng-show="uploaderAvatar.isHTML5">
+                                    <!-- 3. nv-file-over uploader="link" over-class="className" -->
+                                    <div class="well my-drop-zone" nv-file-over="" uploader="uploaderAvatar">
+                                        Drop zone
+                                    </div>
+
+                                </div>
+
+
+                                <input class="btn btn-default" type="file" nv-file-select="" uploader="uploaderAvatar" />
                             </div>
 
-                        </div>
+                            <div class="col-md-9 table-responsive" style="margin-bottom: 40px; margin: 20px;">
 
-                        <input class="btn btn-default" type="file" nv-file-select="" uploader="uploader" />
-                    </div>
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th width="50%">Name</th>
+                                        <th ng-show="uploaderAvatar.isHTML5">Size</th>
+                                        <th ng-show="uploaderAvatar.isHTML5">Progress</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="item in uploaderAvatar.queue">
+                                        <td><strong>{{ item.file.name }}</strong></td>
+                                        <td ng-show="uploaderAvatar.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+                                        <td ng-show="uploaderAvatar.isHTML5">
+                                            <div class="progress" style="margin-bottom: 0;">
+                                                <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                                            </div>
+                                        </td>
+                                        <td class="text-center">
+                                            <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                                            <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                                            <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                                        </td>
+                                        <td nowrap>
+                                            <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                                                <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                                            </button>
+                                            <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                                                <span class="glyphicon glyphicon-trash"></span> Remove
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
 
-                    <div class="col-md-9 table-responsive" style="margin-bottom: 40px">
-
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th width="50%">Name</th>
-                                <th ng-show="uploader.isHTML5">Size</th>
-                                <th ng-show="uploader.isHTML5">Progress</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr ng-repeat="item in uploader.queue">
-                                <td><strong>{{ item.file.name }}</strong></td>
-                                <td ng-show="uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
-                                <td ng-show="uploader.isHTML5">
-                                    <div class="progress" style="margin-bottom: 0;">
-                                        <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                                <div>
+                                    <div>
+                                        Queue progress:
+                                        <div class="progress" style="">
+                                            <div class="progress-bar" role="progressbar" ng-style="{ 'width': uploaderAvatar.progress + '%' }"></div>
+                                        </div>
                                     </div>
-                                </td>
-                                <td class="text-center">
-                                    <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
-                                    <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
-                                    <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
-                                </td>
-                                <td nowrap>
-                                    <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                                    <button type="submit" class="btn btn-success btn-s" ng-click="uploaderAvatar.uploadAll()" ng-disabled="!uploaderAvatar.getNotUploadedItems().length">
                                         <span class="glyphicon glyphicon-upload"></span> Upload
                                     </button>
-                                    <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                                    <button type="button" class="btn btn-warning btn-s" ng-click="uploaderAvatar.cancelAll()" ng-disabled="!uploaderAvatar.isUploading">
                                         <span class="glyphicon glyphicon-ban-circle"></span> Cancel
                                     </button>
-                                    <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                                    <button type="button" class="btn btn-danger btn-s" ng-click="uploaderAvatar.clearQueue()" ng-disabled="!uploaderAvatar.queue.length">
                                         <span class="glyphicon glyphicon-trash"></span> Remove
                                     </button>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-
-                        <div>
-                            <div>
-                                Queue progress:
-                                <div class="progress" style="">
-                                    <div class="progress-bar" role="progressbar" ng-style="{ 'width': uploader.progress + '%' }"></div>
                                 </div>
-                            </div>
-                            <button type="button" class="btn btn-success btn-s" ng-click="uploader.uploadAll()" ng-disabled="!uploader.getNotUploadedItems().length">
-                                <span class="glyphicon glyphicon-upload"></span> Upload all
-                            </button>
-                            <button type="button" class="btn btn-warning btn-s" ng-click="uploader.cancelAll()" ng-disabled="!uploader.isUploading">
-                                <span class="glyphicon glyphicon-ban-circle"></span> Cancel all
-                            </button>
-                            <button type="button" class="btn btn-danger btn-s" ng-click="uploader.clearQueue()" ng-disabled="!uploader.queue.length">
-                                <span class="glyphicon glyphicon-trash"></span> Remove all
-                            </button>
-                        </div>
 
+                            </div>
+
+                        </div>
                     </div>
 
+
+                <div id="avatar" style="float: left;margin-right: 10px;margin: 20px;width: 200px;"><img ng-src="{{image}}"  err-src="./img/default-avatar.png" style="width: 512px;"/> </div>
+                <div id="user-name" style=" font-size: 50px; margin: 20px;">{{user.name}}</div>
+                <div id="user-email" style=" font-size: 20px; margin: 20px;">Email: {{user.email}}</div>
+
+                <div style="clear: both;"></div>
+
+
                 </div>
-
-
             </uib-tab>
 
+
+
+            <uib-tab index="2" heading="My bands">
+
+                    <div class=" uk-animation-fade " style="clear: both; padding-bottom: 20px;" >
+
+
+                        <!--<input class="datepicker" type="text" name="date" data-date-format="dd.mm.yyyy" ng-model="band.established"><br/>-->
+                        <div class="bandsList"ng-repeat="band in bands" style="cursor:pointer;  }" ng-click="bandLoc(band)">
+                            <!--<div id="band-default" ng-if="!band.bandsLogo" style="float: left;margin-right: 10px;margin: 20px;width: 200px;"><img src="./img/default.png" style="width: 512px;"/> </div>-->
+                            <div id="band-logo" ><img ng-src="{{band.bandsLogo}}" err-src="./img/default.png"/></div>
+                        <div id="band-name">{{band.name}}
+                            <button ng-if="band.status == 'active'" class="btn btn-success disabled">active</button>
+                            <button ng-if="band.status == 'suspended'" class="btn btn-warning disabled">suspended</button>
+                            <button ng-if="band.status == 'inactive'" class="btn btn-danger disabled">inactive</button>
+                        </div>
+
+
+                        <div id="band-established">Established: {{band.established}}</div>
+                            <div id="band-leader">Leader: {{band.leader}}</div>
+                        <div id="band-about" style="">About: <br/>{{band.about}}</div>
+                        </div>
+                    </div>
+
+            </uib-tab>
 
             <style>
                 .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
                     background-color: #A9A9A9;
-
+                }
+                .bandsList:hover{
+                    background-color: #A9A9A9;
+                    border-radius: 10px;
                 }
             </style>
-            <uib-tab index="2" heading="Tracks list">
-                <div class="table-responsive">
+            <uib-tab filters="queueLimit" nv-file-drop="" uploader="uploader" index="3" heading="Your tracks">
+
+                <div class="table-responsive uk-animation-fade">
                     <table class="table table-hover">
                         <thead>
                         <tr>
-                            <th>Id</th>
                             <th>Comment</th>
-                            <th>Sended</th>
+                            <th>Created</th>
                             <th>Instrument</th>
-                            <th></th>
+                            <th>Band</th>
+                            <th>Upload file</th>
+                            <th>Uploaded</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr ng-repeat="track in tracks| filter: find">
-                            <td>{{$index}}</td>
                             <td>{{track.comment}}</td>
-                            <td>{{track.lastUpdate}}</td>
+                            <td>{{track.date}}</td>
                             <td>{{track.instrument}}</td>
-                            <td></td>
-                            <td><button ng-click="deleteTrack(track,$index)"class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-remove"></span></button></td>
+                            <td>{{track.band}}</td>
+                            <td><button class="btn btn-default" data-toggle="modal" data-target="#myModal" ng-click="setBandsId(track.bandsId, track.id)"  ><span class="glyphicon glyphicon-upload"></span></button></td>
+                            <td ng-if="track.uploaded=='false'" ><button class="btn btn-warning disabled" style="width: 175px;">WAITING FOR UPLOAD</button></td>
+                            <td ng-if="track.uploaded=='true'"><button class="btn btn-success disabled"  style="width: 175px;">UPLOADED</button></td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
             </uib-tab>
-            <uib-tab index="3" heading="Members list">
-                <table class="table table-hover">
-                    <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th>Avatar</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Instruments</th>
-                        <th>Role</th>
-                        <th></th>
 
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="user in users| filter: find">
-                        <td>{{$index}}</td>
-                        <td><img src="./img/default-avatar.png" style="width: 100px"></td>
-                        <td>{{user.name}}</td>
-                        <td>{{user.email}}</td>
-                        <td>
-                            <table class="table" style="background-color: transparent">
-                                <tbody>
-                                <tr ng-repeat="instrument in user.instruments">
-                                    <td>{{instrument}}</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                        <td>{{user.role}}</td>
+            <uib-tab index="4" heading="Songs list" >
+                <button style="margin: 10px;" class="btn btn-default" ng-repeat="band in bands" ng-click="loadSongs(band.id)"> {{band.name}}</button>
+                <div class="table-responsive uk-animation-fade">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Date</th>
+                            <th>File name</th>
+                            <th>Download file</th>
+                            <th>Uploaded</th>
 
-                    </tr>
-                    </tbody>
-                </table>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="song in songs| filter: find">
+                            <td>{{song.title}}</td>
+                            <td>{{song.date}}</td>
+                            <td>{{song.fileName}}</td>
+                            <td ng-if="song.uploaded=='true'"><button class="btn btn-default" ng-click="downloadSong(song.bandsId, song.fileName)"  ><span class="glyphicon glyphicon-download"></span></button></td>
+                            <td ng-if="song.uploaded=='false'"></td>
+                            <td ng-if="song.uploaded=='false'" ><button class="btn btn-warning disabled" style="width: 175px;">WAITING FOR UPLOAD</button></td>
+                            <td ng-if="song.uploaded=='true'"><button class="btn btn-success disabled"  style="width: 175px;">UPLOADED</button></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
             </uib-tab>
+
+            <uib-tab index="5"   heading="Record track">
+
+
+                <style>
+
+                    canvas {
+                        display: inline-block;
+                        background: #202020;
+                        width: 95%;
+                        height: 45%;
+                        box-shadow: 0px 0px 10px blue;
+                    }
+                    #controls {
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+                        justify-content: space-around;
+                        height: 20%;
+                        width: 100%;
+                    }
+                    #record {
+                        height: 100px;
+                        width: 100px;;
+
+                    }
+                    #record.recording {
+                        background: red;
+                    }
+                    #save, #save img { height: 10vh; }
+                    #save { opacity: 0.25;}
+                    #save[download] { opacity: 1;}
+                    #viz {
+                        height: 80%;
+                        width: 100%;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: space-around;
+                        align-items: center;
+                    }
+                    @media (orientation: landscape) {
+                        body { flex-direction: row;}
+                        #controls { flex-direction: column; height: 100%; width: 10%;}
+                        #viz { height: 100%; width: 90%;}
+                    }
+
+                </style>
+                <div id="recorder"  class="uk-animation-fade" style="width: 90%;  margin: 20px;" >
+                <div id="viz" class="col-sm-10" style="margin-bottom: 20px;">
+                    <canvas id="analyser" width="600" height="200"></canvas>
+                    <canvas id="wavedisplay" width="600" height="200"></canvas>
+                </div >
+                <div id="controls" class="col-sm-2">
+                    <img style="cursor: pointer; margin-bottom: 60px; border-radius: 70px;" id="record" src="./img//mic128.png" onclick="toggleRecording(this);">
+                    <a id="save" href="#"><img style="cursor: pointer" src="./img/save.svg"></a>
+                </div>
+                </div>
+                <div style="clear: both"></div>
+
+                <a href="https://webaudiodemos.appspot.com/AudioRecorder/index.html?hl=pl" style="margin: 20px; font-size: 20px; ">Visit website</a>
+            </uib-tab>
+
+
 
 
 
         </uib-tabset>
 
 
-    </form>
+    </div>
 
 
 </div>
+
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog ">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="row">
+
+                <div class="col-md-3" style="margin:20px;">
+
+                    <h3>Select files</h3>
+
+                    <div ng-show="uploader.isHTML5">
+                        <!-- 3. nv-file-over uploader="link" over-class="className" -->
+                        <div class="well my-drop-zone" nv-file-over="" uploader="uploader">
+                            Drop zone
+                        </div>
+
+                    </div>
+
+
+                    <input class="btn btn-default" type="file" nv-file-select="" uploader="uploader" />
+                </div>
+
+                <div class="col-md-9 table-responsive" style="margin-bottom: 40px; margin: 20px;">
+
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th width="50%">Name</th>
+                            <th ng-show="uploader.isHTML5">Size</th>
+                            <th ng-show="uploader.isHTML5">Progress</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="item in uploader.queue">
+                            <td><strong>{{ item.file.name }}</strong></td>
+                            <td ng-show="uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+                            <td ng-show="uploader.isHTML5">
+                                <div class="progress" style="margin-bottom: 0;">
+                                    <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                                <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                                <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                            </td>
+                            <td nowrap>
+                                <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                                    <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                                </button>
+                                <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                                    <span class="glyphicon glyphicon-trash"></span> Remove
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <div>
+                        <div>
+                            Queue progress:
+                            <div class="progress" style="">
+                                <div class="progress-bar" role="progressbar" ng-style="{ 'width': uploader.progress + '%' }"></div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-success btn-s" ng-click="uploader.uploadAll()" ng-disabled="!uploader.getNotUploadedItems().length">
+                            <span class="glyphicon glyphicon-upload"></span> Upload
+                        </button>
+                        <button type="button" class="btn btn-warning btn-s" ng-click="uploader.cancelAll()" ng-disabled="!uploader.isUploading">
+                            <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                        </button>
+                        <button type="button" class="btn btn-danger btn-s" ng-click="uploader.clearQueue()" ng-disabled="!uploader.queue.length">
+                            <span class="glyphicon glyphicon-trash"></span> Remove
+                        </button>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+
+

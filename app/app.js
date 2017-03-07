@@ -1,5 +1,5 @@
 'use strict';
-angular.module('application', [ "ngRoute", "ui.bootstrap", "angularFileUpload", "myDirectives", 'RESTService','user', 'admin','leader','navigation'])
+angular.module('application', [ "ngRoute", "ui.bootstrap", "angularFileUpload", "myDirectives", 'RESTService','user', 'admin','leader','navigation','angular-storage', 'angular-jwt', 'TokenService'])
 
     .config(['$routeProvider', '$httpProvider',
         function($routeProvider, $httpProvider) {
@@ -20,9 +20,13 @@ angular.module('application', [ "ngRoute", "ui.bootstrap", "angularFileUpload", 
                     templateUrl: 'app/partials/user/profile.html',
                     controller: 'controllerProfilePage'
                 })
-                .when('/create-track/', {
+                .when('/profile/create-track/', {
                     templateUrl: 'app/partials/user/createTrack.html',
                     controller: 'controllerCreateTrack'
+                })
+                .when('/profile/create-band/', {
+                    templateUrl: 'app/partials/user/createBand.html',
+                    controller: 'controllerCreateBand'
                 })
                 /////////////////////leader//////////////////////////////
 
@@ -68,13 +72,9 @@ angular.module('application', [ "ngRoute", "ui.bootstrap", "angularFileUpload", 
                     templateUrl: 'app/partials/admin/adminPanelEditAlbum.html',
                     controller: 'controllerAlbumEdit'
                 })
-                .when('/admin/create-album/', {
+                .when('/admin/create-album/:id', {
                     templateUrl: 'app/partials/admin/adminPanelCreateAlbum.html',
                     controller: 'controllerAlbumCreate'
-                })
-                .when('/admin/create-song/', {
-                    templateUrl: 'app/partials/admin/adminPanelCreateSong.html',
-                    controller: 'controllerSongCreate'
                 })
                 .when('/admin/edit-user/:id', {
                     templateUrl: 'app/partials/admin/adminPanelEditUser.html',
@@ -95,88 +95,4 @@ angular.module('application', [ "ngRoute", "ui.bootstrap", "angularFileUpload", 
                 .otherwise({
                     redirectTo: '/'
                 });
-        }]) //routing
-
-//////////////////////////////////Login////Register///////////////
-
-//    .controller('controllerLogin', function($scope, $http){
-//        $scope.input={};
-//
-//        $scope.formSubmit=function(){
-//            $scope.errors={};
-//            $scope.errors.login ="Invalid login or password";
-//        };
-//
-//    })
-//
-//    .controller('controllerRegister', function($scope, $http){
-//        $scope.input={};
-//        $scope.bandNames=[];
-//        $http.get("app/data/bands.json").success(function(data){
-//            $scope.bands=data;
-//            angular.forEach($scope.bands, function(band){
-//
-//                $scope.bandNames.push(band.name);
-//
-//            });
-//        });
-//
-//
-//        $scope.complete = function(string){
-//            $scope.hidethis = false;
-//            var output = [];
-//            angular.forEach($scope.bandNames, function(bandName){
-//                if(bandName.toLowerCase().indexOf(string.toLowerCase()) >= 0)
-//                {
-//                    output.push(bandName);
-//                }
-//            });
-//            $scope.filterCountry = output;
-//        };
-//        $scope.fillTextbox = function(string){
-//            $scope.bandName = string;
-//            $scope.hidethis = true;
-//        };
-//
-//
-//        document.onkeydown = function(evt) {
-//            evt = evt || window.event;
-//            switch (evt.keyCode) {
-//                case 38:
-//                    document.activeElement.previousElementSibling.focus();
-//                    break;
-//                case 40:
-//                    document.activeElement.nextElementSibling.focus();
-//                    break;
-//            }
-//        };
-//
-//        $scope.formSubmit=function(){
-//            $scope.errors={};
-//            $scope.submit=true;
-//            $scope.errors.name ="Invalid name";
-//            $scope.errors.email ="Invalid email";
-//            $scope.errors.password ="Invalid password";
-//            $scope.errors.passconf ="Invalid password";
-//
-//        };
-//
-//    })
-//
-/////////////////////////////////////SideMenu////////////////////////////
-//
-//    .controller('controllerSideMenu', function(BandsModel, $scope){
-//
-//        $scope.bands =[];
-//        function getBands(){
-//            BandsModel.all().then(function(result){
-//                $scope.bands= result.data;
-//                console.log($scope.bands);
-//            })
-//        }
-//        getBands();
-//
-//        $scope.sideMenu=function(){
-//            return 'app/partials/sideMenu.html'
-//        };
-//    });
+        }]); //routing

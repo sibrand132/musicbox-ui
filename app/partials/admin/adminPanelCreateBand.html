@@ -1,4 +1,4 @@
-<form ng-submit="createBand()">
+<form ng-submit="createBand(band)">
     <div class="cont uk-animation-fade " style="clear: both; border-radius: 20px;" >
 
         <script>
@@ -10,7 +10,7 @@
 
         <div id="edit">
             <div class="form-group">
-                <label>Band name</label>
+                <label style="margin-top: 20px;">Band name</label>
                 <input type="text" class="form-control" ng-model="band.name">
 
             </div>
@@ -20,7 +20,25 @@
                 <textarea type="text" rows="5" class="form-control" ng-model="band.about"></textarea>
             </div>
 
-            <button type="submit" class="btn btn-primary">Save</button>
+            <div class="form-group ">
+                <label>Leader</label>
+                <input list="usr" name="usr" class="form-control" ng-model="band.leader">
+                <datalist id="usr" >
+                    <option ng-repeat="user in users" ng-if="user.leader=='false'" value="{{user.email}}">
+                </datalist>
+
+            </div>
+
+            <div class="form-group">
+                <label for="sel1">Status</label>
+                <select class="form-control" id="sel1" ng-model="band.status">
+                    <option value="active">active</option>
+                    <option value="suspended">suspended</option>
+                    <option value="inactive">inactive</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#success">Save</button>
 
         </div>
 
@@ -33,31 +51,34 @@
         <div id="band-name">{{band.name}}</div>
 
 
-        <div id="band-established">Established: {{currentDate}}</div>
+        <div id="band-established">Established: {{established}}</div>
+        <div id="band-leader">Leader: {{band.leader}}</div>
         <div id="band-about">About: <br/>{{band.about}}</div>
+        <div style="clear: both;"></div>
 
 
-        <div id="band-members">Members: <br/>
-            <table class="table">
-                <thead>
-                <tr>
-                    <th></th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="member in members">
-                    <td><img src="./img/default-avatar.png" style="width: 100px;"/></td>
-                    <td>{{member.name}}</td>
-                    <td>{{member.email}}</td>
-                    <td><button ng-click="deleteMember(member,$index)"class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-remove"></span></button></td>
-                </tr>
-                </tbody>
-            </table>
+
+
+
+    </div>
+
+    <div id="success" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Success</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Successfully saved</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
 
         </div>
-
     </div>
 </form>

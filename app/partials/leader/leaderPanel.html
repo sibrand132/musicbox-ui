@@ -1,6 +1,10 @@
 <div nv-file-drop="" uploader="uploader" class="cont uk-animation-fade " style="clear: both; border-radius: 20px"  >
     <input type="text" class="form-control" style="float: left; margin-right: 10px; margin: 20px; width: 60%" ng-model="find"  placeholder="Search ..." >
-    <a href="#/leader/create-user" class="btn btn-primary btn-md" style="width: 25%; float: right; color: whitesmoke; margin: 20px;">Add member <span class="glyphicon glyphicon-plus"></span></a> <br/>
+    <a href="#/leader/create-song" class="btn btn-primary btn-md" style="width: 25%; float: right; color: whitesmoke; margin: 20px; ">Create song <span class="glyphicon glyphicon-plus"></span></a>
+    <a class="btn btn-primary btn-md" ng-click="joinTracks()" style="width: 25%; float: right; color: whitesmoke; margin: 20px; ">Audio joiner <span class="glyphicon glyphicon-play-circle"></span></a>
+
+
+
 
     <div style="clear: both"></div>
     <br/>
@@ -10,19 +14,12 @@
         <uib-tabset active="activeForm">
 
             <uib-tab index="1" heading="My band">
-                <form ng-submit="saveChanges()">
-                    <div class="cont uk-animation-fade " style="clear: both; border-radius: 20px;" >
-
-                        <script>
-                            $(function(){
-                                $('.datepicker').datepicker();
-
-                            });
-                        </script>
+                <form ng-submit="saveChanges(band)">
+                    <div class=" uk-animation-fade " style="clear: both; border-radius: 20px;" >
 
                         <div id="edit">
                             <div class="form-group">
-                                <label style="padding-top:10px ">Band name</label>
+                                <label style="padding-top:10px ">Band name </label>
                                 <input type="text" class="form-control" ng-model="band.name">
 
                             </div>
@@ -32,13 +29,21 @@
                                 <textarea type="text" rows="5" class="form-control" ng-model="band.about"></textarea>
                             </div>
 
+                            <div class="form-group">
+                                <label for="sel1">Status</label>
+                                <select class="form-control" id="sel1" ng-model="band.status" style="width: 200px;">
+                                    <option value="active">active</option>
+                                    <option value="suspended">suspended</option>
+                                    <option value="inactive">inactive</option>
+                                </select>
+                            </div>
 
-                            <!--FileUploader-->
-                            <div class="row">
+
+                            <button style="margin-top:  20px; margin-bottom: 20px;" type="button" class="btn btn-default" data-toggle="collapse" data-target="#add-avatar">Set logo</button>
+                            <div class="row collapse" id="add-avatar">
 
                                 <div class="col-md-3">
 
-                                    <h3>Select logo image</h3>
 
                                     <div ng-show="uploader.isHTML5">
                                         <!-- 3. nv-file-over uploader="link" over-class="className" -->
@@ -48,9 +53,7 @@
 
                                     </div>
 
-                                    <!-- Example: nv-file-select="" uploader="{Object}" options="{Object}" filters="{String}" -->
-                                    <input type="file" class="btn btn-default" nv-file-select="" uploader="uploader" multiple  /><br/>
-
+                                    <input style="margin-top: 20px;" class="btn btn-default" type="file" nv-file-select="" uploader="uploader" />
                                 </div>
 
                                 <div class="col-md-9 table-responsive" style="margin-bottom: 40px">
@@ -67,16 +70,7 @@
                                         </thead>
                                         <tbody>
                                         <tr ng-repeat="item in uploader.queue">
-                                            <td>
-                                                <strong>{{ item.file.name }}</strong>
-                                                <!-- Image preview -->
-                                                <!--auto height-->
-                                                <!--<div ng-thumb="{ file: item.file, width: 100 }"></div>-->
-                                                <!--auto width-->
-                                                <div ng-show="uploader.isHTML5" ng-thumb="{ file: item._file, height: 100 }"></div>
-                                                <!--fixed width and height -->
-                                                <!--<div ng-thumb="{ file: item.file, width: 100, height: 100 }"></div>-->
-                                            </td>
+                                            <td><strong>{{ item.file.name }}</strong></td>
                                             <td ng-show="uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
                                             <td ng-show="uploader.isHTML5">
                                                 <div class="progress" style="margin-bottom: 0;">
@@ -123,40 +117,36 @@
 
                                 </div>
 
+
                             </div>
 
 
 
-                            <div id="bandlogo-galery" ng-repeat="logo in bandLogos">
-                                <div class="pull-left" style="position: relative">
-                                <button type="button" ng-click="delLogo(logo, $index)" class="btn btn-danger btn-xs" style="position: absolute; right: 0; width:20px; "><strong>&times</strong></button>
-                                <img ng-src="uploads/bandsLogo/{{id}}/{{logo}}" style="width: 150px; margin: 5px;" class="img-thumbnail"/>
-                                </div>
-                            </div>
+
                             <div style="clear: both"></div>
 
-
-
-
-
-
-                            <button type="submit" class="btn btn-primary">Save</button>
+                            <button type="submit" ng-click="saveChanges(band)" class="btn btn-primary">Save</button>
 
                         </div>
 
                         <div style="position: relative; top:20px; margin-left: 20px;">View</div>
                         <hr style="border-style: dashed; border-color: black; margin-left: 20px; margin-right: 20px;"/>
 
-                        <!--<input class="datepicker" type="text" name="date" data-date-format="dd.mm.yyyy" ng-model="band.established"><br/>-->
 
-                        <div id="band-logo"><img src="./img/default.png"/></div>
-                        <div id="band-name">{{band.name}}</div>
+                        <div id="band-logo" ><img ng-src="{{image}}" err-src="./img/default.png"/></div>
+                        <div id="band-name">{{band.name}}
+
+                            <button ng-if="band.status == 'active'" class="btn btn-success disabled">active</button>
+                            <button ng-if="band.status == 'suspended'" class="btn btn-warning disabled">suspended</button>
+                            <button ng-if="band.status == 'inactive'" class="btn btn-danger disabled">inactive</button>
+                        </div>
 
 
                         <div id="band-established">Established: {{band.established}}</div>
+                        <div id="band-leader">Leader: {{band.leader}}</div>
                         <div id="band-about">About: <br/>{{band.about}}</div>
 
-                        <div id="band-albums">Albums: <a href="#/leader/create-album" class="btn btn-default">Create album</a> <br/>
+                        <div id="band-albums" style="padding-bottom: 20px;">Albums: <a href="#/leader/create-album/" class="btn btn-default">Create album</a> <br/>
                             <table class="table table-hover">
                                 <thead>
                                 <tr>
@@ -169,10 +159,10 @@
                                 </thead>
                                 <tbody>
                                 <tr ng-repeat="album in albums">
-                                    <td><img src="./img/default.png" style="width: 100px;"/></td>
+                                    <td><img  style="width: 100px;" ng-src="{{album.albumLogo}}" err-src="./img/default.png"/></td>
                                     <td>{{album.title}}</td>
                                     <td>{{album.releaseDate}}</td>
-                                    <td><a href="#/leader/edit-album/{{$index}}" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil"></span></a> </td>
+                                    <td><a href="#/leader/edit-album/{{album.id}}" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil"></span></a> </td>
                                     <td><button ng-click="deleteAlbum(album,$index)"class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-remove"></span></button></td>
                                 </tr>
                                 </tbody>
@@ -194,39 +184,122 @@
                 }
             </style>
             <uib-tab index="2" heading="Members list">
+                <div class="table-responsive">
                 <table class="table table-hover">
                     <thead>
                     <tr>
-                        <th>Id</th>
                         <th>Avatar</th>
                         <th>Name</th>
                         <th>Email</th>
-                        <th>Instruments</th>
-                        <th>Role</th>
                         <th></th>
                         <th></th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="user in users| filter: find">
-                        <td>{{$index}}</td>
-                        <td><img src="./img/default-avatar.png" style="width: 100px"></td>
-                        <td>{{user.name}}</td>
-                        <td>{{user.email}}</td>
-                        <td>
-                            <table class="table" style="background-color: transparent">
-                                <tbody>
-                                <tr ng-repeat="instrument in user.instruments">
-                                    <td>{{instrument}}</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                        <td>{{user.role}}</td>
-                        <td><button ng-click="deleteUser(user,$index)"class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-remove"></span></button></td>
+                    <tr ng-repeat="member in members| filter: find">
+                        <td><img ng-src="{{member.avatar}}" style="width: 100px;" err-src="./img/default-avatar.png"/></td>
+                        <td>{{member.name}}</td>
+                        <td>{{member.email}}</td>
+                        <td><button ng-click="deleteUser(member,$index)" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-remove"></span></button></td>
                     </tr>
                     </tbody>
                 </table>
+                    </div>
+            </uib-tab>
+            <uib-tab index="3" heading="Add member">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>Avatar</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="user in users| filter: find">
+                            <td><img ng-src="{{user.avatar}}" style="width: 100px;" err-src="./img/default-avatar.png"/></td>
+                            <td>{{user.name}}</td>
+                            <td>{{user.email}}</td>
+                            <td><button ng-click="addMember(user.id,$index)" class="btn btn-success btn-sm"  style=" background-position: center center;"><span class="glyphicon glyphicon-plus"></span></button></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </uib-tab>
+
+            <uib-tab index="4" heading="Band tracks">
+                <div class="table-responsive uk-animation-fade">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>Comment</th>
+                            <th>Created</th>
+                            <th>Instrument</th>
+                            <th>File name</th>
+                            <th>Download file</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="track in tracks| filter: find">
+                            <td>{{track.comment}}</td>
+                            <td>{{track.date}}</td>
+                            <td>{{track.instrument}}</td>
+                            <td>{{track.fileName}}</td>
+                            <td ng-if="track.uploaded=='true'"><button class="btn btn-default" ng-click="downloadTrack(track.bandsId, track.fileName)"  ><span class="glyphicon glyphicon-download"></span></button></td>
+                            <td ng-if="track.uploaded=='false'"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </uib-tab>
+
+            <uib-tab filters="queueLimit" nv-file-drop="" uploader="uploaderSong" index="5" heading="Songs to upload">
+                <div class="table-responsive uk-animation-fade">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Date</th>
+                            <th>Upload file</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="song in songs| filter: find" ng-if="song.uploaded=='false'">
+                            <td>{{song.title}}</td>
+                            <td>{{song.date}}</td>
+                            <td><button class="btn btn-default" data-toggle="modal" data-target="#myModal" ng-click="setBandsId(song.bandsId, song.id)"  ><span class="glyphicon glyphicon-upload"></span></button></td>
+                            <td><button class="btn btn-danger" ng-click="deleteSong(song,$index)"><span class="glyphicon glyphicon-remove"></span></button></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </uib-tab>
+            <uib-tab index="6" heading="Songs to download">
+                <div class="table-responsive uk-animation-fade">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Date</th>
+                            <th>File name</th>
+                            <th>Download file</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="song in songs| filter: find" ng-if="song.uploaded=='true'">
+                            <td>{{song.title}}</td>
+                            <td>{{song.date}}</td>
+                            <td>{{song.fileName}}</td>
+                            <td><button class="btn btn-default" ng-click="downloadSong(song.bandsId, song.fileName)"  ><span class="glyphicon glyphicon-download"></span></button></td>
+                            <td><button class="btn btn-danger" ng-click="deleteSong(song,$index)"><span class="glyphicon glyphicon-remove"></span></button></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </uib-tab>
 
         </uib-tabset>
@@ -235,4 +308,91 @@
     </form>
 
 
+</div>
+
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog ">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="row">
+
+                <div class="col-md-3" style="margin:20px;">
+
+                    <h3>Select files</h3>
+
+                    <div ng-show="uploader.isHTML5">
+                        <!-- 3. nv-file-over uploader="link" over-class="className" -->
+                        <div class="well my-drop-zone" nv-file-over="" uploader="uploaderSong">
+                            Drop zone
+                        </div>
+
+                    </div>
+
+
+                    <input class="btn btn-default" type="file" nv-file-select="" uploader="uploaderSong" />
+                </div>
+
+                <div class="col-md-9 table-responsive" style="margin-bottom: 40px; margin: 20px;">
+
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th width="50%">Name</th>
+                            <th ng-show="uploaderSong.isHTML5">Size</th>
+                            <th ng-show="uploaderSong.isHTML5">Progress</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="item in uploaderSong.queue">
+                            <td><strong>{{ item.file.name }}</strong></td>
+                            <td ng-show="uploaderSong.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+                            <td ng-show="uploaderSong.isHTML5">
+                                <div class="progress" style="margin-bottom: 0;">
+                                    <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                                <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                                <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                            </td>
+                            <td nowrap>
+                                <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                                    <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                                </button>
+                                <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                                    <span class="glyphicon glyphicon-trash"></span> Remove
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <div>
+                        <div>
+                            Queue progress:
+                            <div class="progress" style="">
+                                <div class="progress-bar" role="progressbar" ng-style="{ 'width': uploaderSong.progress + '%' }"></div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-success btn-s" ng-click="uploaderSong.uploadAll()" ng-disabled="!uploaderSong.getNotUploadedItems().length">
+                            <span class="glyphicon glyphicon-upload"></span> Upload
+                        </button>
+                        <button type="button" class="btn btn-warning btn-s" ng-click="uploaderSong.cancelAll()" ng-disabled="!uploaderSong.isUploading">
+                            <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                        </button>
+                        <button type="button" class="btn btn-danger btn-s" ng-click="uploaderSong.clearQueue()" ng-disabled="!uploaderSong.queue.length">
+                            <span class="glyphicon glyphicon-trash"></span> Remove
+                        </button>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
 </div>

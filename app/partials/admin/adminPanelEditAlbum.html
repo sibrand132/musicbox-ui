@@ -1,4 +1,4 @@
-<form ng-submit="saveChanges()">
+<form ng-submit="saveChanges(album)">
     <div class="cont uk-animation-fade " style="clear: both; border-radius: 20px;" >
 
 
@@ -28,16 +28,13 @@
         <div id="band-established">Released: {{album.releaseDate}}</div>
         <div id="band-about">About: <br/>{{album.about}}</div>
 
-        <div id="band-albums">Songs: <a href="#/admin/create-song" class="btn btn-default">Add song</a> <br/>
+        <div id="band-albums">Songs: <br/>
             <table class="table table-hover">
                 <thead>
                 <tr>
                     <th></th>
                     <th>Title</th>
                     <th>Release Date</th>
-                    <!--<th></th>-->
-                    <th></th>
-                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -45,9 +42,6 @@
                     <td><img src="./img/default.png" style="width: 100px;"/></td>
                     <td>{{song.title}}</td>
                     <td>{{song.releaseDate}}</td>
-                    <!--<td><a href="#/admin/edit-album/{{$index}}" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil"></span></a> </td>-->
-                    <td><button ng-click="deleteAlbum(album,$index)"class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-remove"></span></button></td>
-                    <td><a href="#/admin/song-logs/{{$index}}" class="btn btn-default">Logs</a></td>
                 </tr>
                 </tbody>
             </table>

@@ -1,11 +1,17 @@
 <div class="cont uk-animation-fade " style="clear: both; border-radius: 20px;" >
 
-    <div id="band-logo"><img src="./img/default.png"/></div>
-    <div id="band-name">{{band.name}}</div>
+    <div id="band-logo" ><img ng-src="{{band.bandLogo}}" err-src="./img/default.png"/></div>
+    <div id="band-name">{{band.name}}
+        <button ng-if="band.status == 'active'" class="btn btn-success disabled">active</button>
+        <button ng-if="band.status == 'suspended'" class="btn btn-warning disabled">suspended</button>
+        <button ng-if="band.status == 'inactive'" class="btn btn-danger disabled">inactive</button>
+    </div>
 
 
     <div id="band-established">Established: {{band.established}}</div>
+    <div id="band-leader">Leader: {{band.leader}}</div>
     <div id="band-about">About: <br/>{{band.about}}</div>
+
 
     <div id="band-albums">Albums:<br/>
         <table class="table table-hover" >
@@ -14,21 +20,13 @@
                 <th></th>
                 <th>Title</th>
                 <th>Release Date</th>
-                <th>Songs</th>
                 </tr>
             </thead>
             <tbody>
             <tr style="cursor: pointer" ng-repeat="album in albums" ng-click="albumLoc(album)" >
-                <td><img src="./img/default.png" style="width: 100px;"/></td>
+                <td><img style="width: 100px;" ng-src="{{album.albumLogo}}" err-src="./img/default.png"/></td>
                 <td>{{album.title}}</td>
                 <td>{{album.releaseDate}}</td>
-                <td>  <table class="table" style="background-color: transparent">
-                    <tbody>
-                    <tr ng-repeat="song in songs">
-                        <td>{{song.title}}</td>
-                    </tr>
-                    </tbody>
-                </table></td>
             </tr>
             </tbody>
         </table>
@@ -48,10 +46,9 @@
             </thead>
             <tbody>
             <tr ng-repeat="member in members">
-                <td><img src="./img/default-avatar.png" style="width: 100px;"/></td>
+                <td><img style="width: 100px;" ng-src="{{member.avatar}}" err-src="./img/default-avatar.png"/></td>
                 <td>{{member.name}}</td>
                 <td>{{member.email}}</td>
-                <td><button ng-click="deleteMember(member,$index)" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-remove"></span></button></td>
             </tr>
             </tbody>
         </table>

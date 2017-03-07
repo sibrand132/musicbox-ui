@@ -1,20 +1,32 @@
-<form ng-submit="createTrack(track)">
-    <div nv-file-drop="" uploader="uploader" class="cont uk-animation-fade " style="clear: both; border-radius: 20px;" >
+<form ng-submit="createBand(band)">
+    <div class="cont uk-animation-fade " style="clear: both; border-radius: 20px;" >
 
+        <script>
+            $(function(){
+                $('.datepicker').datepicker();
+
+            });
+        </script>
 
         <div id="edit">
             <div class="form-group">
-                <label style="margin-top: 10px;">Track comment</label>
-                <input type="text" class="form-control" ng-model="track.comment">
+                <label style="margin-top: 20px;">Band name</label>
+                <input type="text" class="form-control" ng-model="band.name">
+
             </div>
+
             <div class="form-group">
-                <label style="margin-top: 10px;">Instrument</label>
-                <input type="text" class="form-control" ng-model="track.instrument">
+                <label>About Band</label>
+                <textarea type="text" rows="5" class="form-control" ng-model="band.about"></textarea>
             </div>
+
+
             <div class="form-group">
-                <label style="margin-top: 10px;">Choose band</label>
-                <select class="form-control" style="width: 200px;" ng-model="track.bandsId">
-                    <option ng-repeat="band in bands" value="{{band.id}}">{{band.name}}</option>
+                <label for="sel1">Status</label>
+                <select class="form-control" id="sel1" ng-model="band.status">
+                    <option value="active">active</option>
+                    <option value="suspended">suspended</option>
+                    <option value="inactive">inactive</option>
                 </select>
             </div>
 
@@ -22,18 +34,22 @@
 
         </div>
 
-
         <div style="position: relative; top:20px; margin-left: 20px;">View</div>
         <hr style="border-style: dashed; border-color: black; margin-left: 20px; margin-right: 20px;"/>
 
-
         <!--<input class="datepicker" type="text" name="date" data-date-format="dd.mm.yyyy" ng-model="band.established"><br/>-->
 
+        <div id="band-logo"><img src="./img/default.png"/></div>
+        <div id="band-name">{{band.name}}</div>
 
-        <div id="band-name" style="margin-left: 20px;">{{track.instrument}}</div>
 
-        <div id="band-established">Created: {{currentDate}}</div>
-        <div id="band-about" style="padding-bottom: 20px;">Comment: <br/>{{track.comment}}</div>
+        <div id="band-established">Established: {{established}}</div>
+        <div id="band-leader">Leader: {{band.leader}}</div>
+        <div id="band-about">About: <br/>{{band.about}}</div>
+        <div style="clear: both;"></div>
+
+
+
 
 
     </div>
@@ -49,7 +65,7 @@
                 </div>
                 <div class="modal-body">
                     <p>Successfully saved</p>
-                    <p>You can now upload track in <b><a class="button" ng-click="goToProfile()" data-dismiss="modal">Your tracks</a></b></p>
+                    <p>Please relog to enable leader panel</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -59,4 +75,3 @@
         </div>
     </div>
 </form>
-
